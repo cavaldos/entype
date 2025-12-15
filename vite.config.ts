@@ -1,9 +1,11 @@
 import { defineConfig } from "vite";
+import { fileURLToPath } from "url";
 import react from "@vitejs/plugin-react";
 import tailwindcss from '@tailwindcss/vite'
 
-// @ts-expect-error process is a nodejs global
 const host = process.env.TAURI_DEV_HOST;
+
+const srcDir = fileURLToPath(new URL('./src', import.meta.url));
 
 // https://vite.dev/config/
 export default defineConfig(async () => ({
@@ -11,6 +13,15 @@ export default defineConfig(async () => ({
     react(),
     tailwindcss()
   ],
+
+  resolve: {
+    alias: [
+      // Use `~/` to import from the `src/` directory, e.g. `import X from '~/components/X'`
+      { find: /^~\//, replacement: srcDir + '/' },
+      // Also allow bare `~` -> `src`
+      { find: '~', replacement: srcDir },
+    ],
+  },
 
   // Vite options tailored for Tauri development and only applied in `tauri dev` or `tauri build`
   //
