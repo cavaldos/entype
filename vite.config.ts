@@ -16,7 +16,7 @@ export default defineConfig(async () => ({
 
   resolve: {
     alias: [
-      // Use `~/` to import from the `src/` directory, e.g. `import X from '~/components/X'`
+      // Use `~/` to import from the `src/` directory, e.g. `import X from '~/ennents/X'`
       { find: /^~\//, replacement: srcDir + '/' },
       // Also allow bare `~` -> `src`
       { find: '~', replacement: srcDir },
