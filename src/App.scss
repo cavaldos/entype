@@ -1,0 +1,239 @@
+// SCSS Variables
+$color-primary: #fbbf24;
+$color-primary-light: #fcd34d;
+$color-error: #fb7185;
+$color-info: #60a5fa;
+$color-white: #fff;
+
+$transition-fast: 110ms ease;
+$transition-normal: 120ms ease;
+
+// Slider styles - complex pseudo-elements
+.slider {
+  width: 120px;
+  height: 4px;
+  border-radius: 4px;
+  background: rgba($color-white, 0.15);
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+  cursor: pointer;
+
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: $color-primary;
+    cursor: pointer;
+    box-shadow: 0 0 0 3px rgba($color-primary, 0.2);
+    transition: all $transition-normal;
+
+    &:hover {
+      background: $color-primary-light;
+      box-shadow: 0 0 0 4px rgba($color-primary, 0.3);
+    }
+  }
+
+  &::-moz-range-thumb {
+    width: 14px;
+    height: 14px;
+    border: none;
+    border-radius: 50%;
+    background: $color-primary;
+    cursor: pointer;
+    box-shadow: 0 0 0 3px rgba($color-primary, 0.2);
+    transition: all $transition-normal;
+
+    &:hover {
+      background: $color-primary-light;
+      box-shadow: 0 0 0 4px rgba($color-primary, 0.3);
+    }
+  }
+}
+
+// Character styles with nested states
+.ch {
+  transition: color $transition-fast, background-color $transition-fast;
+
+  &.correct {
+    color: rgba($color-white, 0.92);
+  }
+
+  &.incorrect {
+    color: $color-error;
+    background: rgba($color-error, 0.14);
+    border-radius: 6px;
+  }
+
+  &.pending {
+    color: rgba($color-white, 0.50);
+  }
+
+  &.space {
+    padding: 0 1px;
+  }
+
+  // Tooltip styles with pseudo-elements
+  &.hasTyped {
+    position: relative;
+
+    &::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      left: 50%;
+      bottom: calc(100% + 8px);
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.9);
+      color: $color-white;
+      padding: 6px 8px;
+      border-radius: 6px;
+      font-size: 12px;
+      white-space: nowrap;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity $transition-normal, transform $transition-normal;
+      z-index: 10;
+    }
+
+    &:hover::after {
+      opacity: 1;
+      transform: translateX(-50%) translateY(-4px);
+    }
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      bottom: 100%;
+      transform: translateX(-50%) translateY(6px) rotate(45deg);
+      width: 10px;
+      height: 10px;
+      background: rgba(0, 0, 0, 0.9);
+      opacity: 0;
+      transition: opacity $transition-normal, transform $transition-normal;
+      z-index: 9;
+    }
+
+    &:hover::before {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0px) rotate(45deg);
+    }
+  }
+}
+
+// Caret with animation
+.caret {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  will-change: transform;
+  pointer-events: none;
+
+  &.typing .caretInner {
+    animation: none;
+    opacity: 1;
+  }
+}
+
+.caretInner {
+  width: 3px;
+  height: 100%;
+  background: $color-primary;
+  border-radius: 3px;
+  box-shadow: 0 0 8px rgba($color-primary, 0.5);
+  animation: caret-blink 1s ease-in-out infinite;
+}
+
+@keyframes caret-blink {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.3;
+  }
+}
+
+// Hints
+.focusHint,
+.doneHint {
+  position: absolute;
+  left: 18px;
+  bottom: 12px;
+  font-size: 12px;
+  color: rgba($color-white, 0.45);
+  pointer-events: none;
+}
+
+.doneHint {
+  color: rgba($color-info, 0.85);
+}
+
+// Hidden input
+.ghostInput {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  height: 0;
+  width: 0;
+}
+
+// Dots indicator
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+
+  &.ok {
+    background: rgba($color-white, 0.85);
+  }
+
+  &.bad {
+    background: $color-error;
+  }
+}
+
+// Shake animation
+.shake {
+  animation: shake 160ms ease-in-out;
+}
+
+@keyframes shake {
+  0% {
+    transform: translateX(0);
+  }
+
+  25% {
+    transform: translateX(-3px);
+  }
+
+  50% {
+    transform: translateX(3px);
+  }
+
+  75% {
+    transform: translateX(-2px);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}
+
+// Accessibility - reduced motion
+@media (prefers-reduced-motion: reduce) {
+
+  .caret,
+  .ch,
+  .progressFill,
+  .shake {
+    animation: none !important;
+    transition: none !important;
+  }
+}
